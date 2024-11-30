@@ -7,11 +7,23 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function write()
+    public function index()
     {
-       
-           Storage::disk('local')->put('ex.txt','ehsan312sf');
-            echo asset('images/ex.txt');
+        $fileContent=json_decode(file_get_contents(base_path("products.json")),true);  
+         return response($fileContent);
+    }
 
+    public function show($id)
+    {
+        $fileContent=json_decode(file_get_contents(base_path("products.json")),true);  
+        foreach($fileContent as $product)
+        {
+            if($product['id']==$id)
+              {
+                return response()->json($product,200);
+              }
+        }
+
+        return response()->json(['message'=>'there is no product']);
     }
 }
